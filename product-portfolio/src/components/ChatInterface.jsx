@@ -145,6 +145,49 @@ export default function ChatInterface() {
     }, 1500);
   };
 
+  const [userInput, setUserInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleInputChange = (e) => {
+    setUserInput(e.target.value);
+  };
+
+  const handleSendMessage = () => {
+    if (!userInput.trim()) return;
+
+    setMessages(prev => [...prev, {
+      type: 'user',
+      content: userInput
+    }]);
+
+    setIsTyping(true);
+    setUserInput('');
+
+    // Simulate bot response
+    setTimeout(() => {
+      let botResponse = "I'm not sure how to respond to that. Would you like to know more about Emily's projects or background?";
+      
+      // Simple keyword matching
+      if (userInput.toLowerCase().includes('project')) {
+        botResponse = "I'd love to tell you about Emily's projects! She's worked on Quture (AI fashion platform), Pose (photography coaching app), and a fun game called Cat vs Environment. Which one interests you?";
+      } else if (userInput.toLowerCase().includes('background') || userInput.toLowerCase().includes('experience')) {
+        botResponse = "Emily has a fascinating background! She's a Bessemer Product Fellow, worked in Product & Strategy at Mastercard and Recurrency, and has built a following of 20,000+ on Little Red Book. Would you like to know more about any of these?";
+      }
+
+      setMessages(prev => [...prev, {
+        type: 'bot',
+        content: botResponse
+      }]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 font-['Inter']">
       <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -228,6 +271,28 @@ export default function ChatInterface() {
               </div>
             </motion.form>
           )}
+        </div>
+      </div>
+      
+      {/* Update the chat input section */}
+      <div className="p-4 border-t border-gray-200">
+        <div className="flex space-x-2">
+          <input
+            type="text"
+            value={userInput}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+            placeholder="Type your message..."
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={showNameInput}
+          />
+          <button
+            onClick={handleSendMessage}
+            disabled={showNameInput || !userInput.trim()}
+            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>

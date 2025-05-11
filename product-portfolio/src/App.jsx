@@ -1,19 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import ChatInterface from './components/ChatInterface'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ChatInterface from './components/ChatInterface';
+import Portfolio from './components/Portfolio';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        <AnimatePresence mode='wait'>
-          <Routes>
-            <Route path="/" element={<ChatInterface />} />
-          </Routes>
-        </AnimatePresence>
-      </div>
+      <Routes>
+        <Route path="/" element={<ChatInterface />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+      </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
